@@ -95,10 +95,9 @@ app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
 
-app.use((req, res, next) => {
-  res.locals.success = req.flash("success");
-  res.locals.error = req.flash("error");
-  next();
+app.all("*", (req, res) => {
+  req.flash("error", "Page not found — redirecting to Listings");
+  res.redirect("/listings");
 });
 
 app.use((err, req, res, next) => {
