@@ -6,7 +6,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 
-const dbUrl = process.env.ATLASDB_URL;
+const dbUrl = process.env.ATLASDB_URL; 
+// mongodb://127.0.0.1:27017/wanderlust (local host dbs connection)
 
 const path = require("path");
 const methodOverride = require("method-override");
