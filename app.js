@@ -6,8 +6,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 
-
-
 const dbUrl = process.env.ATLASDB_URL;
 
 const path = require("path");
@@ -36,10 +34,10 @@ main().then(() => {
 async function main() {
     await mongoose.connect(dbUrl);
 }
-//ejs templating
-
+//to set the path os we can access the ejs file in views folder 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+// to use post request and pras the data when we recive in the backend 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.engine('ejs', ejsMate);
@@ -87,15 +85,7 @@ app.use((req, res, next) => {
     next();
 });
 
-// demo user
-// app.get("/demouser", async (req , res ) => {
-//     let fakeUser = new User({
-//         email :"student@gmail.com",
-//         username :"mohith"
-//     });
-//     let registerdUser=  await User.register(fakeUser, "hello");
-//     res.send(registerdUser);
-// });
+
 
 
 //Restructuirng listings 

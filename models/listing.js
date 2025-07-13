@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const { Schema } = mongoose;
 const Review = require("./review.js");
 
-const listingSchema = new Schema({
+const listingSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
@@ -35,6 +35,6 @@ const listingSchema = new Schema({
 
 // });
 
-const Listing = mongoose.model("Listing", listingSchema);
+const Listing = mongoose.model("Listing", listingSchema); //creating a collection which follows the listingSchema property  
 
 module.exports = Listing;

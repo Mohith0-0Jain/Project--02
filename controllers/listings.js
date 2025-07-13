@@ -10,17 +10,28 @@ module.exports.renderNewForm = (req, res) => {
 };
 
 module.exports.showListing = async (req, res) => {
-    let { id } = req.params;
-    const listing = await Listing.findById(id)
-        .populate({ path: "reviews", populate: { path: "author" } })
-        .populate("owner");
-    if (!listing) {
-        req.flash("error", "Listing you requested for does not exist!");
-        res.redirect("/listings");
-    } else {
-        res.render("listings/show.ejs", { listing });
+    const { id } = req.params;
+    let listing;
+    // Try finding by ID
+    if (/^[0-9a-fA-F]{24}$/.test(id)) {
+        listing = await Listing.findById(id)
+            .populate({ path: "reviews", populate: { path: "author" } })
+            .populate("owner");
     }
+    // If not found, or if it wasn't a valid ObjectId, search by title
+    if (!listing) {
+        listing = await Listing.findOne({ title: new RegExp(`^${id}$`, 'i') }) // case-insensitive exact match
+            .populate({ path: "reviews", populate: { path: "author" } })
+            .populate("owner");
+    }
+    if (!listing) {
+        req.flash("error", "Listing you requested does not exist!");
+        return res.redirect("/listings");
+    }
+
+    res.render("listings/show.ejs", { listing });
 };
+
 
 module.exports.createListing = async (req, res, next) => {
     let url = req.file.path;
